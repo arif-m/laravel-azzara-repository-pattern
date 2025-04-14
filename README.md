@@ -16,3 +16,6 @@ Repositories are classes or components that encapsulate the logic required to ac
 - Run `php artisan db:seed` to run seeders
 - Run `php artisan serve`
 - From browser you can access this application on localhost:8000 or http://127.0.0.1:8000
+
+## Contact Us
+You can contact me on arifmugi@gmail.com 
