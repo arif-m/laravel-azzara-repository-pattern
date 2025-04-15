@@ -9,6 +9,7 @@ use \Session;
 use App\Repositories\Menu\IMenuRepository;
 use App\Repositories\GroupUser\IGroupUserRepository;
 use App\Helpers\ApiResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class GroupUserController extends Controller {
 
@@ -105,11 +106,11 @@ class GroupUserController extends Controller {
 	
 		if (!$success)
 		{
-			return ApiResponse::error(500, 'Error');
+			return ApiResponse::error(Response::HTTP_INTERNAL_SERVER_ERROR, 'Error');
 		}
 		
 		Session::flash('flash_message', 'Succesfully Inserted !');
-		return ApiResponse::success(201, 'Success', $attributes);
+		return ApiResponse::success(Response::HTTP_CREATED, 'Success', $attributes);
 		
 	}
 	
@@ -139,11 +140,11 @@ class GroupUserController extends Controller {
 		$success = $this->groupUserRepository->updateData($id, $attributes);
 		if (!$success)
 		{
-			return ApiResponse::error(500, 'Error');
+			return ApiResponse::error(Response::HTTP_INTERNAL_SERVER_ERROR, 'Error');
 		}
 		
 		Session::flash('flash_message', 'Succesfully Updated !');
-		return ApiResponse::success(200, 'Success', $attributes);
+		return ApiResponse::success(Response::HTTP_OK, 'Success', $attributes);
 	}
 
 	/**
@@ -157,9 +158,9 @@ class GroupUserController extends Controller {
 		$delete = $this->groupUserRepository->deleteData($id);
 		if($delete){
 			Session::flash('flash_message', 'Succesfully Deleted !');
-			return ApiResponse::success(200, 'Success');
+			return ApiResponse::success(Response::HTTP_OK, 'Success');
 		}else {
-			return ApiResponse::error(404, 'Data Not Found');
+			return ApiResponse::error(Response::HTTP_NOT_FOUND, 'Data Not Found');
 		}
 	}
 }

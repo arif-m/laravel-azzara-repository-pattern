@@ -12,6 +12,7 @@ use App\Repositories\Menu\IMenuRepository;
 
 use App\Models\GroupUser;
 use App\Helpers\ApiResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller {
 
@@ -119,11 +120,11 @@ class UserController extends Controller {
 		
 		if (!$success)
 		{
-			return ApiResponse::error(500, 'Error');
+			return ApiResponse::error(Response::HTTP_INTERNAL_SERVER_ERROR, 'Error');
 		}
 		
 		Session::flash('flash_message', 'Succesfully Inserted !');
-		return ApiResponse::success(201, 'Success', $attributes);
+		return ApiResponse::success(Response::HTTP_CREATED, 'Success', $attributes);
 	}
 	
 	/**
@@ -144,7 +145,7 @@ class UserController extends Controller {
 		$email = $this->userRepository->isEmailUniqueWhenEdit($email, $id);
 		if($email)
 		{
-			return ApiResponse::error(422, 'Email already exist');
+			return ApiResponse::error(Response::HTTP_UNPROCESSABLE_ENTITY, 'Email already exist');
 		}
 
 		$attributes = $request->only([
@@ -160,11 +161,11 @@ class UserController extends Controller {
 		$success = $this->userRepository->updateData($id, $attributes);
 		if(!$success)
 		{
-			return ApiResponse::error(404, 'Data Not Found');
+			return ApiResponse::error(Response::HTTP_NOT_FOUND, 'Data Not Found');
 		}
 
 		Session::flash('flash_message', 'Succesfully Updated !');
-		return ApiResponse::success(200, 'Success', $attributes);
+		return ApiResponse::success(Response::HTTP_OK, 'Success', $attributes);
 	}
 
 	/**
@@ -177,9 +178,9 @@ class UserController extends Controller {
 	{
 		$delete = $this->userRepository->deleteData($id);
 		if($delete){
-			return ApiResponse::success(200, 'Success');
+			return ApiResponse::success(Response::HTTP_OK, 'Success');
 		}else {
-			return ApiResponse::error(404, 'Data Not Found');
+			return ApiResponse::error(Response::HTTP_NOT_FOUND, 'Data Not Found');
 		}
 	}
 
@@ -200,9 +201,9 @@ class UserController extends Controller {
 		
 		if (!$success)
 		{
-			return ApiResponse::error(500, 'Error');
+			return ApiResponse::error(Response::HTTP_INTERNAL_SERVER_ERROR, 'Error');
 		}
-		return ApiResponse::success(200, 'Success', $userData);
+		return ApiResponse::success(Response::HTTP_OK, 'Success', $userData);
 	}
 	
 	public function changePasswordByAdmin(Request $request, $id)
@@ -222,9 +223,9 @@ class UserController extends Controller {
 		
 		if (!$success)
 		{
-			return ApiResponse::error(500, 'Error');
+			return ApiResponse::error(Response::HTTP_INTERNAL_SERVER_ERROR, 'Error');
 		}
-		return ApiResponse::success(200, 'Success', $userData);
+		return ApiResponse::success(Response::HTTP_OK, 'Success', $userData);
 	}
 	
 	public function changeImage(Request $request)
@@ -243,8 +244,8 @@ class UserController extends Controller {
 
 		if (!$success)
 		{
-			return ApiResponse::error(500, 'Error');
+			return ApiResponse::error(Response::HTTP_INTERNAL_SERVER_ERROR, 'Error');
 		}
-		return ApiResponse::success(200, 'Success', $attributes);
+		return ApiResponse::success(Response::HTTP_OK, 'Success', $attributes);
 	}	
 }
